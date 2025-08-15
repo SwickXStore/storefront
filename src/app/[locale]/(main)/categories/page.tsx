@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/atoms"
 import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
 import { getRegion } from "@/lib/data/regions"
 import isBot from "@/lib/helpers/isBot"
+import { headers } from "next/headers"
 
 const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
 const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
@@ -16,7 +17,10 @@ async function AllCategories({
 }) {
   const { locale } = await params
 
-  const bot = isBot(navigator.userAgent)
+  //const bot = isBot(navigator.userAgent)
+  const hdrs = await headers()
+  const userAgent = hdrs.get("user-agent") || ""
+  const bot = isBot(userAgent)
 
   const breadcrumbsItems = [
     {

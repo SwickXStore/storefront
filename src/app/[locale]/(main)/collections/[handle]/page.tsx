@@ -5,6 +5,7 @@ import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
 import { getCollectionByHandle } from "@/lib/data/collections"
 import isBot from "@/lib/helpers/isBot"
 import { Suspense } from "react"
+import { headers } from "next/headers"
 
 const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
 const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
@@ -16,7 +17,10 @@ const SingleCollectionsPage = async ({
 }) => {
   const { handle, locale } = await params
 
-  const bot = isBot(navigator.userAgent)
+  //const bot = isBot(navigator.userAgent)
+  const hdrs = await headers()
+  const userAgent = hdrs.get("user-agent") || ""
+  const bot = isBot(userAgent)
   const collection = await getCollectionByHandle(handle)
 
   if (!collection) return <NotFound />
